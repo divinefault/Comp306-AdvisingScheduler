@@ -1,155 +1,386 @@
-
 import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createBottomTabNavigator } from 'react-navigation';
-import { Text, View, FlatList, StyleSheet, TouchableHighlight, Alert, Image} from 'react-native';
-import OfficeList from './OfficeList';
-import AddressBook from './AdvisorList';
-import AppointmentList from './AppointmentList';
-import MajorList from './MajorList';
-import StudentList from './StudentList';
+import { StyleSheet, Text, View,TextInput, Button } from 'react-native';
+import { createStackNavigator, FlatList } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 
-class Majors extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-      }
-      render() {
-        return (
-          <View style={styles.container}>
-            <MajorList data={this.state.MajorList} />
-          </View>
-        );
-      }
-}
-class Office extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-      }
-      render() {
-        return (
-          <View style={styles.container}>
-            <OfficeList data={this.state.OfficeList} />
-          </View>
-        );
-      }
-}
-
-class HomeScreen extends React.Component {
+class SignInScreen extends React.Component {
   render() {
     return (
-      <View style={styles.homeStyle}>
-        <Text style={styles.textBox}>Home</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'lightgrey'}}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', margin: 75,borderWidth: 15,
+     borderColor: "white", backgroundColor: 'white'}}>
+        <Text style={{borderWidth: 5, borderColor: "white",backgroundColor: 'white'}}>Sign In Screen</Text>
+        <Text>Username:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="hcollins@ithaca.edu"
+        />
+        <Text>Password:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="*********"
+        />
+        <Button
+          title="Student Sign In"
+          onPress={() => this.props.navigation.navigate('StudentPage')}
+        />
+        <Button
+          title="Advisor Sign In"
+          onPress={() => this.props.navigation.navigate('AdvisorPage')}
+        />
+        <Button
+          title="Forgot Password?"
+        />
+        </View>
+      </View>
+    );
+  }
+}
 
-        <Image style={styles.imgStyle}
-          source={{uri: 'https://www.intermedia.net/assets/images/advisor-icon.png'}}
+class StudentPageScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+     
+        <Text>Student Page Screen</Text>
+        <Button
+          title="Create Appointment"
+          onPress={() => this.props.navigation.navigate('StudentCreateAppointment')}
+        />
+        <Button
+          title="View Appointments"
+          onPress={() => this.props.navigation.navigate('ViewAppointment')}
+        />
+    
+      </View>
+    );
+  }
+}
+
+class AdvisorPageScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Advisor Page Screen</Text>
+        <Button
+          title="Create Appointment"
+          onPress={() => this.props.navigation.navigate('AdvisorCreateAppointment')}
+        />
+        <Button
+          title="View Students"
+          onPress={() => this.props.navigation.navigate('ListOfStudents')}
+        />
+        <Button
+          title="View Appointments"
+          onPress={() => this.props.navigation.navigate('ViewAppointment')}
         />
       </View>
     );
   }
 }
 
-class Advisors extends React.Component {
-    constructor(props) {
+class ListOfStudentsScreen extends React.Component {
+  constructor(props){
         super(props);
-        this.state = {text: ''};
-      }
-      render() {
-        return (
-          <View style={styles.container}>
-            <AddressBook data={this.state.AddressBook} />
-          </View>
-        );
-      }
-}
-class Appointments extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-      }
-      render() {
-        return (
-          <View style={styles.container}>
-            <AppointmentList data={this.state.AppointmentList} />
-          </View>
-        );
-      }
-}
-class Students extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-      }
-      render() {
-        return (
-          <View style={styles.container}>
-            <StudentList data={this.state.StudentList} />
-          </View>
-        );
-      }
+        this.state = { 
+                data: [
+                  { key: "Carter Smith" },    
+                  { key: "Andrew Simpson" },     
+                  { key: "Kylie Verduin" },           
+                  { key: "Alexa Johnson" },
+                  { key: "Johnie Appleman" },      
+                ]   
+          };  
+  }
+
+  _renderItem = data => {
+        return <Text style={styles.row}>{data.item.key}</Text>;
+  };  
+
+  render() {
+    return (
+      <View style={styles.container}>
+      <Text>Students</Text>
+        <FlatList data={this.state.data} renderItem={this._renderItem} />
+      </View>
+    );  
+  }
 }
 
-export default createBottomTabNavigator(
+class ViewAppointmentScreen extends React.Component {
+  constructor(props){
+        super(props);
+        this.state = { 
+                data: [
+                  { key: "8/11/18; 2:00PM" },    
+                  { key: "9/8/18; 10:00AM" },     
+                  { key: "11/3/18; 12:15PM" },           
+                  { key: "11/21/18; 4:00PM" },
+                  { key: "12/17/18; 10:30PM" },
+                ]   
+          };  
+  }
+
+  _renderItem = data => {
+        return <Text style={styles.row}>{data.item.key}</Text>;
+  };  
+
+  render() {
+    return (
+      <View style={styles.container}>
+      <Text>Upcoming Appointments</Text>
+        <FlatList data={this.state.data} renderItem={this._renderItem} />
+      </View>
+    );  
+  }
+}
+
+class StudentCreateAppointmentScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Create Appointment Screen</Text>
+        <Text>Date:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="11/12/18"
+        />
+        <Text>Time:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="1:15PM"
+        />
+        <Text>Reason:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="Next semester registration."
+        />
+        <Text>Time Interval :</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="15 minutes"
+        />
+        <Button
+          title="Create Appointment"
+        />
+      </View>
+    );
+  }
+}
+
+class AdvisorCreateAppointmentScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Create Appointment Screen</Text>
+        <Text>Date:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="11/12/18"
+        />
+        <Text>Time:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="1:15PM"
+        />
+        <Text>Reason:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="Next semester registration."
+        />
+        <Text>Student:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="John Smith"
+        />
+        <Text>Time Interval :</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="15 minutes"
+        />
+        <Button
+          title="Create Appointment"
+        />
+      </View>
+    );
+  }
+}
+
+class RegistrationScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Sign Up Screen</Text>
+        <Button
+          title="Create Student Account"
+          onPress={() => this.props.navigation.navigate('StudentSignUp')}
+        />
+        <Button
+          title="Create Advisor Account"
+          onPress={() => this.props.navigation.navigate('AdvisorSignUp')}
+        />
+      </View>
+    );
+  }
+}
+
+class AdvisorSignUpScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Advisor Sign Up Screen</Text>
+        <Text>School Email:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="lrobertson@ithaca.edu"
+        />
+        <Text>Password:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="*********"
+        />
+        <Text>Password Confirmation:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="*********"
+        />
+        <Text>School:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="Ithaca College"
+        />
+        <Button
+          title="Create Account"
+          onPress={() => this.props.navigation.navigate('AdvisorSignUp')}
+        />
+      </View>
+    );
+  }
+}
+
+class StudentSignUpScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',borderWidth: 15,
+     borderColor: "white", backgroundColor: 'powderblue'}}>
+        <Text>Student Sign Up Screen</Text>
+        <Text>School Email:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="jsmith9@ithaca.edu"
+        />
+         <Text>Advisor:</Text>
+          <TextInput
+          style={{height: 60}}
+          placeholder="Jill Loop"
+        />
+        <Text>Password:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="*********"
+        />
+        <Text>Password Confirmation:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="*********"
+        />
+        <Text>School:</Text>
+        <TextInput
+          style={{height: 60}}
+          placeholder="Ithaca College"
+        />
+        <Button
+          title="Create Account"
+          onPress={() => this.props.navigation.navigate('AdvisorSignUp')}
+        />
+      </View>
+    );
+  }
+}
+
+
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      
+      <View style={{ flex: 1, textalign: 'center',alignItems: 'center', justifyContent: 'center',  backgroundColor: 'powderblue' }}>
+        <Text style={styles.title}>Welcome To Advising Scheduler</Text>
+        <Button style={styles.buttonText} 
+          title="Sign In"
+          onPress={() => this.props.navigation.navigate('SignIn')}
+        />
+        <Button
+          title="Sign Up"
+          onPress={() => this.props.navigation.navigate('Registration')}
+        />
+      </View>
+    );
+  }
+}
+
+const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Advisor: Advisors,
-    Office: Office,
-    Appointment: Appointments,
-    Major: Majors,
-    Student: Students
     
+    //Sign In
+    SignIn: SignInScreen,
+    StudentPage: StudentPageScreen,
+    ViewAppointment: ViewAppointmentScreen,
+    StudentCreateAppointment: StudentCreateAppointmentScreen,
+
+    AdvisorPage: AdvisorPageScreen,
+    ListOfStudents: ListOfStudentsScreen,
+    AdvisorCreateAppointment: AdvisorCreateAppointmentScreen,
+    
+    //Registration
+    Registration: RegistrationScreen,
+    StudentSignUp: StudentSignUpScreen,
+    AdvisorSignUp: AdvisorSignUpScreen,
   },
   {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Home') {
-          iconName = `ios-desktop${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Associates') {
-          iconName = `ios-walk`;
-        } else if (routeName === 'Update'){
-          iconName = `ios-create${focused ? '' : '-outline'}`;
-        }
-
-        return <Ionicons name={iconName} size={25} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
-    },
+    initialRouteName: 'Home',
   }
 );
+
+const AppContainer = createAppContainer(RootStack);
+
+export default class App extends React.Component {
+  
+  render() {
+    return <AppContainer />;
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#dddddf',
+    //backgroundColor: '#F5FCFF',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 100,
   },
-  homeStyle:{
-    backgroundColor:"#dddddf",
-    flex: 1,
-    //justifyContent: 'center', 
-    alignItems: 'center'
+   row: {
+     fontSize: 24, 
+     padding: 42, 
+     borderWidth: 1,
+     borderColor: "#DDDDDD",
+ },
+  buttonText: {
+    fontSize: 60,
   },
-  textBox:{
-    backgroundColor:"#5F4B66",
-    paddingVertical: '2%',
-    paddingHorizontal: '10%',
-    marginTop: '60%',
-    fontSize:30,
-    fontFamily:'Chalkduster',
-    color: '#dddddd'
-  },
-  imgStyle:{
-    width: '60%', 
-    height: '40%',
-    borderRadius: 80,
-    margin: '10%'
-  },
-  
+  title: {
+     fontSize: 34, 
+     padding: 42, 
+     //justifyContent: 'center',
+     textalign: 'center',
+     borderWidth: 5,
+     borderColor: "white",
+  }
 });
